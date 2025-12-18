@@ -1,167 +1,131 @@
-# Addressing Customer Churn in E-commerce: A Machine Learning–Based Predictive Approach
+Addressing Customer Churn in E-commerce:
+A Machine Learning–Based Predictive Approach
+Project Overview
 
-## Overview
+Customer churn merupakan salah satu tantangan utama dalam bisnis e-commerce. Kehilangan pelanggan tidak hanya berdampak pada penurunan pendapatan, tetapi juga meningkatkan biaya akuisisi pelanggan baru.
 
-Proyek ini merupakan Capstone Project Module 3 yang berfokus pada pemanfaatan Machine Learning untuk memprediksi **customer churn** pada perusahaan e-commerce. Customer churn merupakan permasalahan bisnis yang krusial karena berdampak langsung pada penurunan pendapatan serta peningkatan biaya akuisisi pelanggan baru.
+Proyek ini bertujuan untuk membangun model Machine Learning yang mampu memprediksi pelanggan yang berpotensi churn, sehingga perusahaan dapat melakukan tindakan preventif secara lebih efektif dan tepat sasaran.
 
-Melalui analisis data historis pelanggan, proyek ini bertujuan untuk membangun model klasifikasi yang mampu mengidentifikasi pelanggan dengan risiko churn tinggi sehingga perusahaan dapat melakukan tindakan retensi secara lebih efektif dan tepat sasaran.
+Business Problem
 
----
+Perusahaan e-commerce mengalami kesulitan dalam mengidentifikasi pelanggan yang berisiko berhenti menggunakan layanan. Tanpa sistem prediksi yang akurat, strategi retensi pelanggan menjadi tidak optimal dan cenderung reaktif.
 
-## Business Problem
+Project Goals
 
-Perusahaan e-commerce memiliki basis pelanggan yang besar, namun tidak semua pelanggan dapat dipertahankan dalam jangka panjang. Kehilangan pelanggan (churn) sering kali terjadi tanpa tanda yang jelas dan baru disadari setelah pelanggan berhenti bertransaksi.
+Membangun model klasifikasi untuk memprediksi customer churn
 
-Tanpa sistem prediksi yang baik, perusahaan berisiko:
+Mengidentifikasi faktor-faktor utama yang memengaruhi churn
 
-* Kehilangan pelanggan bernilai tinggi
-* Mengalokasikan biaya promosi dan retensi secara tidak efisien
-* Mengambil keputusan bisnis secara reaktif, bukan preventif
+Membantu perusahaan memprioritaskan strategi retensi pelanggan
 
----
+Analytic Approach
 
-## Objectives
+Pendekatan analitik yang digunakan dalam proyek ini meliputi:
 
-Tujuan utama dari proyek ini adalah:
+Data Understanding
 
-1. Membangun model Machine Learning untuk memprediksi kemungkinan customer churn.
-2. Mengidentifikasi pola dan karakteristik pelanggan yang berpotensi churn.
-3. Menyediakan insight yang dapat digunakan sebagai dasar strategi retensi pelanggan.
+Exploratory Data Analysis (EDA)
 
----
+Feature Engineering
 
-## Dataset
+Model Benchmarking (beberapa algoritma)
 
-Dataset yang digunakan adalah **data_ecommerce_customer_churn.csv**, yang berisi informasi demografis, perilaku transaksi, tingkat kepuasan, serta status churn pelanggan.
+Handling Imbalanced Data (Resampling)
 
-Target variabel:
+Hyperparameter Tuning
 
-* `Churn` (0 = Tidak Churn, 1 = Churn)
+Model Evaluation & Selection
 
----
+Data Understanding
 
-## Project Workflow
+Setiap baris pada dataset merepresentasikan satu pelanggan e-commerce yang unik. Tahap ini bertujuan untuk memahami struktur data, karakteristik fitur, serta relevansinya terhadap permasalahan churn.
 
-Tahapan pengerjaan proyek ini meliputi:
+Target Variable
 
-1. **Business Understanding**
+Churn
 
-   * Memahami permasalahan bisnis dan tujuan analisis
+0 : Pelanggan tidak churn
 
-2. **Data Understanding**
+1 : Pelanggan churn
 
-   * Eksplorasi struktur data, tipe variabel, dan distribusi target
+Kelompok Fitur dan Artinya
+1. Customer & Transaction Information
 
-3. **Exploratory Data Analysis (EDA)**
+Tenure : Lama pelanggan bergabung (bulan)
 
-   * Analisis distribusi churn
-   * Analisis fitur numerik dan kategorikal terhadap churn
+CityTier : Tingkat kota tempat pelanggan tinggal
 
-4. **Data Cleaning & Feature Engineering**
+PreferredLoginDevice : Perangkat yang paling sering digunakan pelanggan
 
-   * Penanganan missing value
-   * Pembuatan fitur baru berbasis perilaku pelanggan
+PreferredPaymentMode : Metode pembayaran utama pelanggan
 
-5. **Preprocessing & Pipeline**
+PreferedOrderCat : Kategori produk yang paling sering dipesan
 
-   * Encoding fitur kategorikal
-   * Scaling fitur numerik
-   * Pipeline terintegrasi dengan resampling
+SatisfactionScore : Tingkat kepuasan pelanggan
 
-6. **Baseline Model Benchmarking**
+2. Behavioral & Engagement Features
 
-   * Perbandingan beberapa algoritma klasifikasi
-   * Evaluasi menggunakan F2-score
+NumberOfDeviceRegistered : Jumlah perangkat yang terdaftar
 
-7. **Handling Imbalanced Data**
+OrderCount : Jumlah transaksi pelanggan
 
-   * Eksperimen teknik resampling (ROS, SMOTE, RUS, CNN)
+DaySinceLastOrder : Jarak waktu sejak transaksi terakhir
 
-8. **Hyperparameter Tuning**
+CashbackAmount : Total cashback yang diterima pelanggan
 
-   * Tuning model terbaik menggunakan GridSearchCV
+3. Customer Support Indicator
 
-9. **Model Evaluation**
+Complaint : Menunjukkan apakah pelanggan pernah mengajukan komplain
 
-   * Confusion Matrix
-   * Classification Report
+Tahap Data Understanding memastikan setiap fitur memiliki makna bisnis yang jelas dan relevan untuk memprediksi churn.
 
-10. **Model Saving**
+Exploratory Data Analysis (EDA)
 
-    * Penyimpanan model final menggunakan pickle
+EDA dilakukan untuk mengeksplorasi pola dan hubungan antara fitur dengan churn.
 
----
+Insight Utama dari EDA
 
-## Models Evaluated
+Dataset bersifat imbalanced, pelanggan tidak churn lebih dominan
 
-Beberapa model yang dievaluasi dalam proyek ini antara lain:
+Pelanggan dengan jarak waktu transaksi terakhir yang lama memiliki kecenderungan churn lebih tinggi
 
-* Logistic Regression
-* K-Nearest Neighbors (KNN)
-* Decision Tree
-* Random Forest
-* Gradient Boosting
+Pelanggan dengan engagement rendah (order sedikit, device terbatas) lebih berisiko churn
 
-Pemilihan model terbaik didasarkan pada performa **F2-score**, dengan fokus pada kemampuan mendeteksi pelanggan churn.
+Beberapa kategori produk dan karakteristik pelanggan menunjukkan churn rate yang lebih tinggi
 
----
+Insight ini menjadi dasar untuk feature engineering, pemilihan metrik evaluasi, dan strategi resampling.
 
-## Evaluation Metric
+Modeling & Evaluation
 
-Metric utama yang digunakan adalah **F2-score**, karena:
+Algoritma yang digunakan:
 
-* Customer churn merupakan kelas minoritas
-* False negative (gagal mendeteksi churn) memiliki dampak bisnis yang lebih besar
+Logistic Regression
 
-Metric pendukung:
+KNN
 
-* Precision
-* Recall
-* Confusion Matrix
+Decision Tree
 
----
+Random Forest
 
-## Key Results
+Gradient Boosting
 
-Model final menunjukkan kemampuan yang baik dalam mendeteksi pelanggan churn dengan recall yang tinggi, sehingga dapat digunakan sebagai alat bantu pengambilan keputusan untuk strategi retensi pelanggan.
+Evaluasi menggunakan F2-score untuk memprioritaskan recall (mengurangi false negative churn)
 
----
+Penanganan imbalance menggunakan teknik resampling
 
-## Business Impact
+Hyperparameter tuning dilakukan untuk meningkatkan performa model terbaik
 
-Dengan implementasi model ini, perusahaan dapat:
+Final Output
 
-* Mengidentifikasi pelanggan berisiko churn lebih awal
-* Memfokuskan program retensi secara lebih efisien
-* Mengurangi kehilangan pendapatan akibat churn
+Model terbaik disimpan dalam format pickle dan dapat digunakan untuk:
 
----
+Prediksi churn pelanggan baru
 
-## Repository Structure
+Mendukung strategi retensi pelanggan berbasis data
 
-```
-├── Addressing Customer Churn in E-commerce.ipynb
-├── data_ecommerce_customer_churn.csv
-├── churn_model.pkl
-└── README.md
-```
+Author
 
----
+Fahrezy Maulana Haz
+📧 Email: farez007100@gmail.com
 
-## How to Run
-
-1. Pastikan seluruh library yang dibutuhkan telah terinstal
-2. Jalankan notebook `Addressing Customer Churn in E-commerce.ipynb`
-3. Model final akan disimpan dalam format pickle
-
----
-
-## Author
-
-Capstone Project Module 3 – Machine Learning
-
----
-
-## Notes
-
-Proyek ini disusun untuk tujuan pembelajaran dan evaluasi akademik, serta dapat dikembangkan lebih lanjut dengan data tambahan dan algoritma yang lebih kompleks.
+🔗 LinkedIn: https://www.linkedin.com/in/fahrezy-maulana-haz
