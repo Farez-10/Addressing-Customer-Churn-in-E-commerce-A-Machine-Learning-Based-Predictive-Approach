@@ -1,131 +1,180 @@
-Addressing Customer Churn in E-commerce:
-A Machine Learning–Based Predictive Approach
-Project Overview
+# Addressing Customer Churn in E-commerce: A Machine Learning–Based Predictive Approach
 
-Customer churn merupakan salah satu tantangan utama dalam bisnis e-commerce. Kehilangan pelanggan tidak hanya berdampak pada penurunan pendapatan, tetapi juga meningkatkan biaya akuisisi pelanggan baru.
+## 1. Project Overview
 
-Proyek ini bertujuan untuk membangun model Machine Learning yang mampu memprediksi pelanggan yang berpotensi churn, sehingga perusahaan dapat melakukan tindakan preventif secara lebih efektif dan tepat sasaran.
+Proyek ini bertujuan untuk **memprediksi customer churn pada platform e-commerce** menggunakan pendekatan machine learning. Customer churn didefinisikan sebagai kondisi ketika pelanggan berhenti menggunakan layanan atau tidak lagi melakukan transaksi.
 
-Business Problem
+Dengan membangun model prediktif yang akurat, perusahaan dapat:
 
-Perusahaan e-commerce mengalami kesulitan dalam mengidentifikasi pelanggan yang berisiko berhenti menggunakan layanan. Tanpa sistem prediksi yang akurat, strategi retensi pelanggan menjadi tidak optimal dan cenderung reaktif.
+* Mengidentifikasi pelanggan yang berisiko churn lebih awal
+* Menyusun strategi retensi pelanggan yang lebih efektif
+* Mengurangi kerugian bisnis akibat kehilangan pelanggan
 
-Project Goals
+**Tujuan utama proyek:**
 
-Membangun model klasifikasi untuk memprediksi customer churn
+* Melakukan eksplorasi dan pemahaman data (Data Understanding & EDA)
+* Membangun feature engineering yang relevan dengan perilaku pelanggan
+* Membandingkan beberapa algoritma machine learning sebagai baseline model
+* Melakukan penanganan data imbalance dengan teknik resampling
+* Melakukan hyperparameter tuning untuk meningkatkan performa model
+* Mengevaluasi model menggunakan metrik yang sesuai (F2-score)
 
-Mengidentifikasi faktor-faktor utama yang memengaruhi churn
+---
 
-Membantu perusahaan memprioritaskan strategi retensi pelanggan
+## 2. Data Sources
 
-Analytic Approach
+Dataset yang digunakan merupakan data pelanggan e-commerce yang berisi informasi:
 
-Pendekatan analitik yang digunakan dalam proyek ini meliputi:
+* Demografi pelanggan
+* Perilaku transaksi dan penggunaan layanan
+* Status churn (target variable)
 
-Data Understanding
+Setiap baris data merepresentasikan **satu pelanggan unik**.
 
-Exploratory Data Analysis (EDA)
+**Target Variable:**
 
-Feature Engineering
+* `Churn` (0 = Tidak Churn, 1 = Churn)
 
-Model Benchmarking (beberapa algoritma)
+---
 
-Handling Imbalanced Data (Resampling)
+## 3. Data Understanding
 
-Hyperparameter Tuning
+### 3.1 Struktur Data
 
-Model Evaluation & Selection
+Dataset terdiri dari fitur numerik dan kategorikal, di antaranya:
 
-Data Understanding
+* **Demografi:** Age, MaritalStatus, dll
+* **Perilaku Pelanggan:** Tenure, DaySinceLastOrder, CashbackAmount
+* **Preferensi:** PreferedOrderCat
+* **Interaksi Layanan:** Complaint
 
-Setiap baris pada dataset merepresentasikan satu pelanggan e-commerce yang unik. Tahap ini bertujuan untuk memahami struktur data, karakteristik fitur, serta relevansinya terhadap permasalahan churn.
+### 3.2 Permasalahan Data
 
-Target Variable
+* Data imbalance pada target `Churn`
+* Nilai kosong (missing values)
+* Variabel kategorikal dengan banyak kategori
 
-Churn
+---
 
-0 : Pelanggan tidak churn
+## 4. Exploratory Data Analysis (EDA)
 
-1 : Pelanggan churn
+EDA dilakukan untuk memahami pola dan karakteristik data, meliputi:
 
-Kelompok Fitur dan Artinya
-1. Customer & Transaction Information
+* Distribusi customer churn (menunjukkan data tidak seimbang)
+* Analisis fitur numerik terhadap churn menggunakan histogram
+* Analisis fitur kategorikal menggunakan churn rate per kategori
 
-Tenure : Lama pelanggan bergabung (bulan)
+**Insight utama dari EDA:**
 
-CityTier : Tingkat kota tempat pelanggan tinggal
+* Pelanggan dengan frekuensi komplain lebih tinggi cenderung churn
+* Kategori produk tertentu memiliki churn rate lebih tinggi
+* Pelanggan dengan jarak waktu transaksi terakhir yang lama lebih berisiko churn
 
-PreferredLoginDevice : Perangkat yang paling sering digunakan pelanggan
+---
 
-PreferredPaymentMode : Metode pembayaran utama pelanggan
+## 5. Feature Engineering
 
-PreferedOrderCat : Kategori produk yang paling sering dipesan
+Beberapa fitur baru dibuat untuk meningkatkan performa model:
 
-SatisfactionScore : Tingkat kepuasan pelanggan
+* `RecencyFlag` → indikator pelanggan lama tidak bertransaksi
+* `EngagementScore` → interaksi pelanggan dengan platform
+* `HighCashback` → indikator insentif tinggi
+* Transformasi dan encoding fitur kategorikal
 
-2. Behavioral & Engagement Features
+Seluruh proses feature engineering dibungkus dalam **pipeline** menggunakan `ColumnTransformer`.
 
-NumberOfDeviceRegistered : Jumlah perangkat yang terdaftar
+---
 
-OrderCount : Jumlah transaksi pelanggan
+## 6. Modeling Approach
 
-DaySinceLastOrder : Jarak waktu sejak transaksi terakhir
+### 6.1 Baseline Models
 
-CashbackAmount : Total cashback yang diterima pelanggan
+Model yang dibandingkan:
 
-3. Customer Support Indicator
+* Logistic Regression
+* K-Nearest Neighbors (KNN)
+* Decision Tree
+* Random Forest
+* Gradient Boosting
 
-Complaint : Menunjukkan apakah pelanggan pernah mengajukan komplain
+Evaluasi menggunakan **Stratified K-Fold Cross Validation (5-fold)**.
 
-Tahap Data Understanding memastikan setiap fitur memiliki makna bisnis yang jelas dan relevan untuk memprediksi churn.
+### 6.2 Evaluation Metric
 
-Exploratory Data Analysis (EDA)
+Digunakan **F2-score** karena:
 
-EDA dilakukan untuk mengeksplorasi pola dan hubungan antara fitur dengan churn.
+* Lebih menekankan pada **Recall**
+* Lebih sesuai untuk kasus churn, di mana kehilangan pelanggan (False Negative) lebih mahal dibanding False Positive
 
-Insight Utama dari EDA
+---
 
-Dataset bersifat imbalanced, pelanggan tidak churn lebih dominan
+## 7. Handling Imbalanced Data
 
-Pelanggan dengan jarak waktu transaksi terakhir yang lama memiliki kecenderungan churn lebih tinggi
+Untuk mengatasi data imbalance, dilakukan eksperimen dengan:
 
-Pelanggan dengan engagement rendah (order sedikit, device terbatas) lebih berisiko churn
+* Random Over Sampling (ROS)
+* SMOTE
+* Random Under Sampling (RUS)
+* Condensed Nearest Neighbour (CNN)
 
-Beberapa kategori produk dan karakteristik pelanggan menunjukkan churn rate yang lebih tinggi
+Resampling diintegrasikan langsung ke dalam pipeline menggunakan `imblearn.Pipeline`.
 
-Insight ini menjadi dasar untuk feature engineering, pemilihan metrik evaluasi, dan strategi resampling.
+---
 
-Modeling & Evaluation
+## 8. Hyperparameter Tuning
 
-Algoritma yang digunakan:
+Model terbaik (Gradient Boosting) ditingkatkan performanya menggunakan:
 
-Logistic Regression
+* GridSearchCV
+* Tuning parameter utama seperti:
 
-KNN
+  * `n_estimators`
+  * `learning_rate`
+  * `max_depth`
+  * `subsample`
 
-Decision Tree
+---
 
-Random Forest
+## 9. Model Evaluation
 
-Gradient Boosting
+Evaluasi akhir dilakukan menggunakan:
 
-Evaluasi menggunakan F2-score untuk memprioritaskan recall (mengurangi false negative churn)
+* Confusion Matrix
+* Precision, Recall, F1-score
 
-Penanganan imbalance menggunakan teknik resampling
+**Hasil utama:**
 
-Hyperparameter tuning dilakukan untuk meningkatkan performa model terbaik
+* Model mampu menangkap sebagian besar pelanggan churn (recall tinggi)
+* Cocok digunakan sebagai sistem peringatan dini churn
 
-Final Output
+---
 
-Model terbaik disimpan dalam format pickle dan dapat digunakan untuk:
+## 10. Conclusion & Recommendation
 
-Prediksi churn pelanggan baru
+### 10.1 Conclusion
 
-Mendukung strategi retensi pelanggan berbasis data
+Model machine learning berhasil mengidentifikasi pelanggan berisiko churn dengan performa yang baik, terutama setelah penerapan resampling dan hyperparameter tuning.
 
-Author
+### 10.2 Business Recommendation
 
-Fahrezy Maulana Haz
-📧 Email: farez007100@gmail.com
+* Terapkan program retensi untuk pelanggan dengan risiko churn tinggi
+* Fokus pada peningkatan pengalaman pelanggan yang sering komplain
+* Gunakan model ini sebagai bagian dari sistem CRM
 
-🔗 LinkedIn: https://www.linkedin.com/in/fahrezy-maulana-haz
+---
+
+## 11. Technologies Used
+
+* Python (Pandas, NumPy)
+* Scikit-learn
+* Imbalanced-learn
+* Matplotlib & Seaborn
+* Jupyter Notebook
+
+---
+
+## 12. Contact
+
+* **Name:** Fahrezy Maulana Haz
+* **Email:** [farez007100@gmail.com](mailto:farez007100@gmail.com)
+* **LinkedIn:** [https://www.linkedin.com/in/fahrezy-maulana-haz](https://www.linkedin.com/in/fahrezy-maulana-haz)
